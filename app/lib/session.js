@@ -23,7 +23,9 @@ export async function getSession() {
   const secret = process.env.SESSION_SECRET;
   if (token && secret) return verifySignedSession(token, secret);
   if (process.env.NODE_ENV !== "production") {
-    return { userId: cookieStore.get("addis-eats-user")?.value || "demo-customer" };
+    const userId = cookieStore.get("addis-eats-user")?.value;
+    if (!userId) return null;
+    return { userId, name: cookieStore.get("addis-eats-name")?.value || "Demo customer" };
   }
   return null;
 }

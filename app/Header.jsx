@@ -1,7 +1,10 @@
 import Link from "next/link";
 import CartBadge from "./CartBadge";
+import { signOut } from "./actions/auth";
+import { getSession } from "./lib/session";
 
-export default function Header() {
+export default async function Header() {
+  const session = await getSession();
   return (
     <header className="topbar">
       <div className="brand-wrap">
@@ -15,6 +18,16 @@ export default function Header() {
         <Link href="/menu" className="search-button">Browse menu</Link>
         <Link href="/favorites" className="search-button">Favorites</Link>
         <Link href="/orders" className="search-button">Orders</Link>
+        {session ? (
+          <>
+            <span className="account-greeting">Hi, {session.name || "there"}</span>
+            <form action={signOut}>
+              <button className="search-button account-signout" type="submit">Sign out</button>
+            </form>
+          </>
+        ) : (
+          <Link href="/sign-in" className="search-button account-link">Sign in</Link>
+        )}
         <CartBadge />
       </nav>
     </header>
