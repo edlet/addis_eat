@@ -9,14 +9,15 @@ function verifySignedSession(token, secret) {
   if (provided.length !== expected.length || !timingSafeEqual(provided, expected)) return null;
   try {
     const session = JSON.parse(Buffer.from(payload, "base64url").toString("utf8"));
-    if (typeof session.userId !== "string" || !session.userId || session.expiresAt <= Date.now()) return null;
-    return { userId: session.userId };
+    if (typeof session.userId !== "string" || !session.userId) return null;
+    if (!Number.isFinite(session.expiresAt) || session.expiresAt <= Date.now()) return null;
+    return { userId: session.userId, name: typeof session.name === "string" ? session.name : null };
   } catch {
     return null;
   }
 }
 
-// Local classroom fallback. Production requires the identity provider's signed, HttpOnly session cookie.
+// Production guest sessions and identity-provider sessions both use the signed, HttpOnly session cookie.
 export async function getSession() {
   const cookieStore = await cookies();
   const token = cookieStore.get("addis-eats-session")?.value;
