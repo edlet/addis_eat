@@ -1,6 +1,7 @@
 import HomePage from "./HomePage";
+import Day40Shell from "./Day40Shell";
 import { dishes } from "./menu/dishes";
 
 export default function Home() {
-  return <div className="app-layout"><HomePage dishes={dishes.slice(0, 4)} /></div>;
+  return <Day40Shell><HomePage dishes={dishes.slice(0, 4)} /></Day40Shell>;
 }

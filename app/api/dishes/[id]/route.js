@@ -1,9 +1,16 @@
-import { getDish } from "../../../menu/dishes";
-
-function error(message, status) { return Response.json({ error: { code: status === 404 ? "NOT_FOUND" : "BAD_REQUEST", message } }, { status }); }
+import { getDishes } from "@/app/lib/dishes";
 
 export async function GET(_request, { params }) {
   const { id } = await params;
-  const dish = await getDish(id);
-  return dish ? Response.json({ dish }) : error("Dish not found.", 404);
+  const dishes = await getDishes();
+  const dish = dishes.find((item) => String(item.id) === id);
+
+  if (!dish) {
+    return Response.json(
+      { error: { code: "DISH_NOT_FOUND", message: "Dish not found." } },
+      { status: 404 },
+    );
+  }
+
+  return Response.json({ dish });
 }

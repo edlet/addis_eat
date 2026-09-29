@@ -1,3 +1,6 @@
-import { dishes } from "../../menu/dishes";
+import { getDishes } from "@/app/lib/dishes";
 
-export async function GET() { return Response.json({ dishes }); }
+export async function GET() {
+  const dishes = await getDishes();
+  return Response.json({ dishes });
+}
