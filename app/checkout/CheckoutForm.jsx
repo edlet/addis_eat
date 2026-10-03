@@ -16,7 +16,7 @@ export default function CheckoutForm({ deliveryArea = "Bole", initialItems = [] 
 
   useEffect(() => { if (state.success) clearCart(); }, [state.success, clearCart]);
 
-  if (state.success) return <main className="state-screen"><p className="section-kicker">Order confirmed</p><h1>Thank you!</h1><p>Your order #{state.orderId.slice(0, 8)} has been received and the kitchen is getting started.</p><Link href="/orders" className="primary-button">View my orders</Link></main>;
+  if (state.success) return <main className="state-screen"><p className="section-kicker">Order confirmed</p><h1>Thank you!</h1><p>Your order #{state.orderId.slice(0, 8)} has been received and the kitchen is getting started.</p><Link href={`/order-status/${state.orderId}`} className="primary-button">Track your order</Link></main>;
   if (!checkoutItems.length) return <main className="state-screen"><h1>Checkout</h1><p>Add a dish before checking out.</p><Link href="/menu" className="primary-button">Browse the menu</Link></main>;
 
   return (
